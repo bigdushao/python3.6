@@ -1,0 +1,123 @@
+特征工程分为三部分:
+    1.数据预处理
+        1.1无量纲化
+            1.1.1标准化
+            1.1.2区间缩放法
+            1.1.3标准化与归一化
+        1.2对定量特征二值化
+        1.3对定性特征哑编码
+        1.4缺失值计算
+        1.5数据转化
+    2.特征选择
+        2.1Filter
+            2.1.1方差选择法
+            2.1.2想关系数法
+            2.1.3卡方检验
+            2.1.4互信息法
+        2.2Wrapper
+            2.2.1递归特征消除法
+        2.3Embedded
+            2.3.1基于惩罚项的特征选择法
+            2.3.2基于树模型的特征选择法
+    3.降维
+        3.1主成分分析法(PCA)
+        3.2线性判别分析法(LDA)
+
+特征获取方案:
+    如何获取特征，如何存储
+
+特征处理:
+    1.特征清洗
+        1.1清洗异常样本
+        1.2采样
+            1.2.1数据不均衡
+            1.2.2样本权重
+    2.预处理
+        2.1单个样本
+            2.1.1归一化
+            2.1.2离散化
+            2.1.3Dummy Coding
+            2.1.4缺失值
+            2.1.5数值变化
+                2.1.5.1log
+                2.1.5.2指数
+                2.1.5.3Box-Cox
+        2.2多个特征
+            2.2.1降维
+                2.2.1.1PCA
+                2.2.1.2LDA
+            2.2.2特征选择
+                2.2.2.1Filter(自变量和目标变量之间的关联)
+                2.2.2.2Wrapper(通过目标函数(AUC/MSE)来决定是否加入一个变量)
+                2.2.2.3Embedded(学习器自身自动选择特征,正则化、决策树、深度学习)
+        2.3衍生变量
+            2.3.1对原始数据加工，生成有商业意义的变量
+
+Binarizer 二值化
+FunctionTransformer 自定义转化函数
+Imputer 缺失值处理
+KernelCenterer
+LabelBinarizer 预测值二值化
+LabelEncoder 预测值热编码
+MultiLableBinarizer
+MaxAbsScaler [-1, 1]
+MinMaxScaler [0, 1]     X_std = (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
+                        X_scaled = X_std * (max - min) + min
+Normalizer 正则化 对每个样本计算样本p-范数，然后对样本中每个元素除以该范数，处理的结果使得每个处理后样本的p-范数等于1.
+OneHotEncoder 热编码
+PolynomialFeatures 生成多项的，相互影响的特征值[a, b] degree = 2 [a, b, a * b, a * a, b * b] (a + b) * (a + b)
+QuantileTransformer：使用分位数信息，这种方法转换的功能遵循统一或正态分布。因此，对于一个给定的特征，这种转换倾向于分散最频繁的值。
+                    它也减少了（边际）异常值的影响：因此这是一个强大的预处理方案。
+                    转换是独立应用于每个功能的。特征的累积密度函数用于投影原始值。特征值低于或高于拟合范围的新的/不可见的数据将被映射到输出分布的边界。
+                    请注意，这种转换是非线性的。它可能会扭曲在相同规模测量的变量之间的线性相关性，但使得在不同规模测量的变量更加直接可比。
+                    StanardScaler执行速度更快的标准化，但对异常值的鲁棒性较差。
+                    RobustScaler执行健壮的标准化，消除了异常值的影响，但不会将异常值和内部值放在相同的范围内
+RobustScaler 缩放带有离群点的数据，数据包含许多异常值，使用数据的均值和方差进行缩放可能无法起到很好的效果。
+            在这些情况下，可以使用robust_scale和RobustScaler替代。他们对数据的中心和范围使用更强大的估计。
+StandardScaler 标准化,不能去处离散点的影响。离散点对数据的标准化影响比较大
+
+add_dummy_feature
+binarize
+label_binarize
+maxabx_scale
+minmax_scale
+normalize
+quantile_transform
+robust_scale
+scale
+
+Standardization,or mean removal and variance scaling
+    Scalling features to a range
+    Scalling spare data
+    Scalling data with outliers
+    centering kernal matrices
+Non-linear transformation
+Normalization
+Binarization
+    Feature binarization
+Encoding categorical features
+Imputation of missing values
+Generating ploynomial features
+Custom transformers
+
+特征选择:
+    去掉方差较小的特征
+    方差阈值(Variance Threashold)特征选择的一个简单方法。去掉那些方差没有达到阈值的特征。删除零方差的特征，只有一个值的样本
+    假设我们有一个有布尔特征的数据集，然后我们想去掉那些超过80%的样本都是0（或者1）的特征。布尔特征是伯努利随机变量，方差为 p(1-p)。
+    注:函数参数列表中有一个参数为方差。
+    单变量特征选择
+    但变量特征选择通过单变量统计检验选择特征，可以看作一个估计其的预处理步骤
+        SelectBest 只保留 k 个最高分的特征；
+        SelectPercentile 只保留用户指定百分比的最高得分的特征；
+        使用常见的单变量统计检验：假正率SelectFpr，错误发现率selectFdr，或者总体错误率SelectFwe；
+        GenericUnivariateSelect 通过结构化策略进行特征选择，通过超参数搜索估计器进行特征选择
+    SelectKBest和SelectPerecntile能够返回特征评价的得分和P值
+
+    递归特征淘汰(RFE)
+    给特征赋予一个外部模型产生的权重(例如:线性模型系数),FFE递归地使用越来越少的特征来进行特征选择，首先，在原始数据上建立模型并且给每个特征一个权重
+    然后，淘汰绝对权重最小的特征。递归地执行这个过程直到达到希望的特征数。
+    RFECV使用交叉验证方法发现最优特征数量。
+
+    SelectFromModel方法特征选择
+    SelectFromModel是一种元转换器，可以与那些有coef_ 或者feature_importances_属性的模型一起使用。如果coef_ 或者feature_importances_小于阈值，我们就认为特征是不重要的。除了指定阈值以外，也可以使用启发式的方式。有效的启发式方法包括均值、中位数或者乘以系数，比如 0.1*均值
+
