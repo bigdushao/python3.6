@@ -1,6 +1,6 @@
 # coding:utf-8
 '''
-时间序列统计检验模块，将统计检验结果更加爱直观的展现出来
+时间序列统计检验模块，将统计检验结果更加直观的展现出来
 '''
 
 from statsmodels.tsa.stattools import adfuller
