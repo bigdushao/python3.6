@@ -202,7 +202,7 @@ plt.title('Partial Autocorrelation Function')
 plt.tight_layout()
 # 图中，上下两条灰线之间是置信区间，p的值就是ACF第一次穿过上置信区间时的横轴值。
 # q的值就是PACF第一次穿过上置信区间的横轴值。所以从图中可以得到p=2，q=2。
-# plt.show()
+plt.show()
 
 # step-2:得到参数估计值p, d, q之后，生成模型ARIMA(p, d, q) 蓝线是输入值，红线是模型的拟合值，RSS的累计平方误差。
 # model1 ARIMA(2, 1, 0)
@@ -243,6 +243,6 @@ predictions_ARIMA_log = predictions_ARIMA_log.add(predictions_ARIMA_diff_cumsum,
 predictions_ARIMA = np.exp(predictions_ARIMA_log)
 plt.figure()
 plt.plot(ts)
-plt.plot(predictions_ARIMA)
+plt.plot(predictions_ARIMA_log)
 plt.title('RMSE: %.4f'% np.sqrt(sum((predictions_ARIMA-ts)**2)/len(ts)))
 plt.show()
